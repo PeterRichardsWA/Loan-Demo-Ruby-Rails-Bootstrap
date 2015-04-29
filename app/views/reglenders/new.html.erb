@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Registration for new Lenders</title>
+	<style>
+		.sbs {
+			width: 400px;
+			margin: 10px;
+			float: left;
+		}
+		.center {
+			width: 70%;
+			margin: 0 auto;
+		}
+
+	</style>
+</head>
+<body>
+
+	<div id='container'>
+
+		<div class="center">
+
+			<div class="panel panel-success sbs">
+				<div class="panel-heading">New Lender Registration    <a href="/users/index" class='btn btn-primary'>Back to Login</a></div>
+					<div id='lender' class="panel-body">
+					<%= simple_form_for @lender, :url => reglenders_create_path, html: { class: 'form-vertical' } do |f| %>
+
+					  <% if @lender.errors.any? %>
+					    <div id="error_explanation">
+					      <h2><%= pluralize(@lender.errors.count, "error") %> prohibited this user from being saved:</h2>
+					      <ul>
+					      <% @lender.errors.full_messages.each do |message| %>
+					        <li><%= message %></li>
+					      <% end %>
+					      </ul>
+					    </div>
+					  <% end %>
+
+					  <%= f.input :first_name, placeholder: 'First Name...', :input_html => { :size => 20, :maxlength => 35 } %>
+					  <%= f.input :last_name, placeholder: 'Last Name...', :input_html => { :size => 20, :maxlength => 35 } %>
+					  <%= f.input :email, placeholder: 'Valid Email...', :input_html => { :size => 20, :maxlength => 45 } %>
+					  <%= f.input :password, placeholder: 'Secure Password...', :input_html => { :size => 4, :maxlength => 15 } %>
+					  <%= f.input :password_confirmation, :input_html => { :size => 4, :maxlength => 15 } %>
+					  <%= f.input :lendable, placeholder: 'Amount available...', as: :decimal, :input_html => { :size => 10, :maxlength => 15 }, :value => number_to_currency(:lendable,precision: 2) %>
+					  <%= f.button :submit, 'CREATE LENDER', :class => 'btn btn-success' %>
+
+					<% end %>
+					</div>
+					<div class="panel-footer">Enter your information and click "CREATE LENDER" to build your account.  The amount entered here is the total amount your have available to lend out.</div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+</body>
+</html>

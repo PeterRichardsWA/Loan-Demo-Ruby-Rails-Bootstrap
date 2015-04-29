@@ -1,0 +1,88 @@
+<%
+# Need @lenders who are lending me money. added up to total, against how much I need.
+# @totalRaised
+# @fullName
+# @amountNeeded
+%>
+<style>
+	#container {
+		width: 95%;
+		margin: 0 auto;
+		margin-top: 20px;
+	}
+	#header {
+		margin: 0 auto;
+		margin-top: 10px;
+		width: 95%;
+	}
+	#left {
+		float:left;
+		text-align: right;
+		width: 19%;
+	}
+	#right {
+		float: left;
+		width: 19%;
+		margin-left: 10px;
+	}
+	#logout {
+		float: left;
+		width: 200px;
+		margin-left: 300px;
+	}
+	.clear {
+		clear: both;
+	}
+</style>
+
+
+<div id='container'>
+
+	<div id='header'>
+		<div id='left'>
+			Name:<br>
+			Amount Needed:<br>
+			Amount Raised:
+		</div>
+		<div id='right'>
+        	<%=session[:name]%><br>
+        	<%=number_to_currency(session[:loan])%><br>
+        	<%=number_to_currency(session[:procured])%>
+		</div>
+		<div id='logout'>
+			<a href='/users/logout' class='btn btn-primary'>LOGOUT</a>
+		</div>
+		<div class='clear'></div>
+	</div>
+
+
+	<div class="panel panel-success sbs">
+		<div class="panel-heading">Your current set of lenders</div>
+			<div id='lender' class="panel-body">
+				<table class='table table-hover'>
+					<tr>
+						<th>Name</th>
+						<th>Email</th>
+						<th>Amount Lent</th>
+						<th>Since</th>
+					</tr>
+					<% if !@lenders then %>
+						<tr>
+							<td colspan=6>No lenders have lent you money yet.</td>
+						</tr>
+					<% else %>
+						<% @lenders.each do |l| %>
+							<tr>
+								<td><%=l[:first_name]+" "+l[:last_name]%></td>
+								<td><%=l[:email]%></td>
+								<td><%=number_to_currency(l[:amount_procured])%></td>
+								<td><%=l[:created_at].strftime('%b %d, %Y')%></td>
+							</tr>
+						<% end %>
+					<% end %>
+				</table>
+			</div>
+		<div class="panel-footer">These are your currently active loans.</div>
+	</div>
+
+</div>

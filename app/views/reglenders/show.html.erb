@@ -1,0 +1,134 @@
+<style>
+	#container {
+		width: 95%;
+		margin: 0 auto;
+		margin-top: 20px;
+	}
+	#header {
+		margin: 0 auto;
+		margin-top: 10px;
+		width: 95%;
+		border-width: 1px solid #8e8e8e;
+	}
+	#left {
+		float:left;
+		text-align: right;
+		width: 19%;
+	}
+	#right {
+		float: left;
+		width: 19%;
+		margin-left: 10px;
+	}
+	#logout {
+		float: left;
+		width: 200px;
+		margin-left: 300px;
+	}
+	.clear {
+		clear: both;
+	}
+</style>
+
+<div id='container'>
+
+	<div id='header'>
+		<div id='left'>
+			Name:<br>
+			Account Balance:
+		</div>
+		<div id='right'>
+			<%=session[:name]%><br>
+			<%=number_to_currency(session[:lendable])%>
+		</div>
+		<div id='logout'>
+			<a href='/users/logout' class='btn btn-primary'>LOGOUT</a>
+		</div>
+		<div class='clear'></div>
+	</div>
+
+	<div class="panel panel-primary sbs">
+		<div class="panel-heading">List of People in Need of Help</div>
+
+			<div id='lender' class="panel-body">
+				<table class='table table-hover'>
+					<tr>
+						<th>Name</th>
+						<th>Needed Money For</th>
+						<th>Reason for Loan</th>
+						<th>Amount Needed</th>
+						<th>Amount Raised</th>
+						<th>Action</th>
+					</tr>
+					<% if !@open_loans then %>
+						<tr>
+							<td colspan=6>No borrowers have signed up yet.</td>
+						</tr>
+					<% else %>
+						<% @open_loans.each do |b| %>
+							<tr>
+								<td><%=b[:first_name]+" "+b[:last_name]%></td>
+								<td><%=b[:needed_for]%></td>
+								<td><%=b[:description]%></td>
+								<td><%=number_to_currency(b[:loan])%></td>
+								<td><%=number_to_currency(b[:amount_procured])%></td>
+
+								<td>
+								<%= form_tag "/reglenders/"+b[:id].to_s, method: 'patch' do %>
+								<%= number_field(:newloan, :loan_amount, in: 1.0..20000.0, step: 0.5, class: 'col-sm-8') %>
+								&nbsp;
+								<%= submit_tag 'LEND', class: 'btn-xs btn-success' %>
+								<% end %>
+								</td>
+
+							</tr>
+						<% end %>
+					<% end %>
+				</table>
+			</div>
+
+		<div class="panel-footer">You may lend money to anyone on this list. Adding money to an existing loan will simply add that amount to the total loan.</div>
+	</div>
+
+	<div class="panel panel-success sbs">
+		<div class="panel-heading">My Loans</div>
+
+			<div id='lender' class="panel-body">
+				<table class='table table-hover'>
+					<tr>
+						<th>Name</th>
+						<th>Needed Money For</th>
+						<th>Reason for Loan</th>
+						<th>Amount Needed</th>
+						<th>Amount Raised</th>
+						<th>Action</th>
+					</tr>
+					<% if !@my_loans then %>
+						<tr>
+							<td colspan=6>No borrowers have signed up yet.</td>
+						</tr>
+					<% else %>
+						<% @my_loans.each do |b| %>
+							<tr>
+								<td><%=b[:first_name]+" "+b[:last_name]%></td>
+								<td><%=b[:needed_for]%></td>
+								<td><%=b[:description]%></td>
+								<td><%=number_to_currency(b[:loan])%></td>
+								<td><%=number_to_currency(b[:amount_procured])%></td>
+								<td>
+								<%= form_tag "/reglenders/"+b[:id].to_s, method: 'patch' do %>
+								<%= number_field(:newloan, :loan_amount, in: 1.0..20000.0, step: 0.5, class: 'col-sm-8') %>
+								&nbsp;
+								<%= submit_tag 'LEND', class: 'btn-xs btn-success' %>
+								<% end %>
+								</td>
+							</tr>
+						<% end %>
+					<% end %>
+				</table>
+			</div>
+
+		<div class="panel-footer">You may lend money to anyone on this list. Adding money to an existing loan will simply add that amount to the total loan.</div>
+	</div>
+
+</div>

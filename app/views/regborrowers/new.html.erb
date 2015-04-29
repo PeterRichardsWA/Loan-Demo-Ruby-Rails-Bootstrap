@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Registration for new borrowers</title>
+	<style>
+		.sbs {
+			width: 400px;
+			margin: 10px;
+			float: left;
+		}
+		.center {
+			width: 70%;
+			margin: 0 auto;
+		}
+
+
+	</style>
+</head>
+<body>
+
+	<div id='container'>
+
+		<div class="center">
+
+			<div class="panel panel-primary sbs">
+				<div class="panel-heading">New Borrower Registration   <a href="/users/index" class="btn btn-success">Back to Login</a></div>
+					<div id='borrower' class="panel-body">
+					<%= simple_form_for @borrower, :url => regborrowers_create_path, html: { class: 'form-vertical' } do |f| %>
+
+					  <% if @borrower.errors.any? %>
+					    <div id="error_explanation">
+					      <h2><%= pluralize(@borrower.errors.count, "error") %> prohibited this user from being saved:</h2>
+					      <ul>
+					      <% @borrower.errors.full_messages.each do |message| %>
+					        <li><%= message %></li>
+					      <% end %>
+					      </ul>
+					    </div>
+					  <% end %>
+
+					  <%= f.input :first_name, placeholder: 'First Name...' %>
+					  <%= f.input :last_name, placeholder: 'Last Name...' %>
+					  <%= f.input :email, placeholder: 'Email user@domain.com...' %>
+					  <%= f.input :password, :input_html => { :size => 4, :maxlength => 15 }, placeholder: 'password >=8 chars...' %>
+					  <%= f.input :password_confirmation, :input_html => { :size => 4, :maxlength => 15 } %>
+					  <%= f.input :needed_for, placeholder: 'Short title for need...' %>
+					  <%= f.input :description, as: :text, placeholder: 'Full description of need...' %>
+					  <%= f.input :amount, as: :decimal, placeholder: 'Amount looking to borrow...' %>
+					  <%= f.button :submit, 'CREATE BORROWER', :class => 'btn btn-primary' %>
+					<% end %>
+					</div>
+					<div class="panel-footer">Enter your information and click "CREATE BORROWER" to build your account.  The amount entered here is the total amount you would like to borrow on your initial loan.</div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+</body>
+</html>

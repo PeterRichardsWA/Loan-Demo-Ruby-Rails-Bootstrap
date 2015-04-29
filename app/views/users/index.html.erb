@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Lending Dojo</title>
+	<style>
+		.sbs {
+			width: 350px;
+			margin: 10px;
+			float: left;
+		}
+		.center {
+			width: 80%;
+			margin: 0 auto;
+		}
+		#error_explanation {
+		  color: #f00;
+		  ul {
+		    list-style: none;
+		    margin: 0 0 18px 0;
+		  }
+		}
+		.field_with_errors {
+		  @extend .control-group;
+		  @extend .error;
+		 }
+	</style>
+</head>
+<body>
+
+	<div id='container'>
+
+		<div class="center">
+
+		<div class="panel panel-primary sbs">
+			<div class="panel-heading">Borrower Login</div>
+				<div id='borrower' class="panel-body">
+				<%= simple_form_for @borrower, :url => regborrowers_login_path, html: { class: 'form-vertical' } do |t| %>
+
+				<% @tmp = @borrower %>
+				<%= render 'shared/form_errors' %>
+
+				<%= t.input :email, :size => 10, :maxlength => 35, placeholder: 'login email...', class: 'form-control'%>
+				<%= t.input :password, :size => 10, :maxlength => 35, placeholder: 'password', class: 'form-control' %>
+				<%= t.button :submit, 'BORROWER LOGIN', :class => 'btn btn-primary' %>
+				<% end %>
+				</div>
+				<div class="panel-footer"><%= link_to "REGISTER", regborrowers_new_path %></div>
+			</div>
+		</div>
+
+		<div class="panel panel-success sbs">
+			<div class="panel-heading">Lender Login</div>
+				<div id='lender' class="panel-body">
+				<%= simple_form_for @lender, :url => reglenders_login_path, html: { class: 'form-vertical' } do |t| %>
+
+				<% @tmp = @lender %>
+				<%= render 'shared/form_errors' %>
+
+				<%= t.input :email, placeholder: 'login email...', class: 'form-control' %>
+				<%= t.input :password, placeholder: 'password', class: 'form-control' %>
+				<%= t.button :submit, 'LENDER LOGIN', :class => 'btn btn-success'  %>
+				<% end %>
+				</div>
+				<div class="panel-footer"><%= link_to "REGISTER", reglenders_new_path %></div>
+			</div>
+		</div>
+
+		</div>
+
+	</div>
+</body>
+</html>
