@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   get 'reglenders/new'
   get 'reglenders/show'
-  post 'reglenders/:id', to: 'reglenders#update', constraints: { id: /\d{1,}/ }
+  patch 'reglenders/:id', to: 'reglenders#update', constraints: { id: /\d{1,}/ }
   post 'reglenders/create'
   post 'reglenders/login'
 

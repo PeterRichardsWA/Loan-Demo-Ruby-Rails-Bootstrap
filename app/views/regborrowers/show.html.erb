@@ -35,54 +35,69 @@
 	}
 </style>
 
+<div class="container">
+	<div class="row clearfix">
 
-<div id='container'>
+		<div class="col-md-12 column">
+			<nav class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
+				<div class="navbar-header">
+					 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="#">DojoLoans</a>
+				</div>
 
-	<div id='header'>
-		<div id='left'>
-			Name:<br>
-			Amount Needed:<br>
-			Amount Raised:
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li class="active">
+							<a href="#">Portfolio</a>
+						</li>
+						<li>
+							<a href="#">New Loan</a>
+						</li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href='#'><%=session[:name]%></a></li>
+						<li class="divider"></li>
+						<li><a href='#' style="color: #F4F822">Needed: <%=number_to_currency(session[:loan])%></a></li>
+						<li class="divider"></li>
+						<li><a href='#' style="color: #14F826">Procurred: <%=number_to_currency(session[:procured])%></a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<a href='/users/logout'>LOGOUT</a>
+						</li>
+						<li class='divider'>&nbsp;&nbsp;&nbsp;</li>
+					</ul>
+				</div>
+			</nav>
 		</div>
-		<div id='right'>
-        	<%=session[:name]%><br>
-        	<%=number_to_currency(session[:loan])%><br>
-        	<%=number_to_currency(session[:procured])%>
-		</div>
-		<div id='logout'>
-			<a href='/users/logout' class='btn btn-primary'>LOGOUT</a>
-		</div>
-		<div class='clear'></div>
-	</div>
 
-
-	<div class="panel panel-success sbs">
-		<div class="panel-heading">Your current set of lenders</div>
-			<div id='lender' class="panel-body">
-				<table class='table table-hover'>
-					<tr>
-						<th>Name</th>
-						<th>Email</th>
-						<th>Amount Lent</th>
-						<th>Since</th>
-					</tr>
-					<% if !@lenders then %>
+		<div class="panel panel-success sbs" style="margin-top:100px">
+			<div class="panel-heading">Your current set of lenders</div>
+				<div id='lender' class="panel-body">
+					<table class='table table-hover'>
 						<tr>
-							<td colspan=6>No lenders have lent you money yet.</td>
+							<th>Name</th>
+							<th>Email</th>
+							<th>Amount Lent</th>
+							<th>Since</th>
 						</tr>
-					<% else %>
-						<% @lenders.each do |l| %>
+						<% if !@lenders then %>
 							<tr>
-								<td><%=l[:first_name]+" "+l[:last_name]%></td>
-								<td><%=l[:email]%></td>
-								<td><%=number_to_currency(l[:amount_procured])%></td>
-								<td><%=l[:created_at].strftime('%b %d, %Y')%></td>
+								<td colspan=6>No lenders have lent you money yet.</td>
 							</tr>
+						<% else %>
+							<% @lenders.each do |l| %>
+								<tr>
+									<td><%=l[:first_name]+" "+l[:last_name]%></td>
+									<td><%=l[:email]%></td>
+									<td><%=number_to_currency(l[:amount_procured])%></td>
+									<td><%=l[:created_at].strftime('%b %d, %Y')%></td>
+								</tr>
+							<% end %>
 						<% end %>
-					<% end %>
-				</table>
-			</div>
-		<div class="panel-footer">These are your currently active loans.</div>
-	</div>
+					</table>
+				</div>
+			<div class="panel-footer">These are your currently active loans.</div>
+		</div>
 
+	</div>
 </div>
