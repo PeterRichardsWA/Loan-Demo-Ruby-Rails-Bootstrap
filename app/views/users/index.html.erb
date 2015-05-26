@@ -4,10 +4,15 @@
 	<meta charset="UTF-8">
 	<title>Lending Dojo</title>
 	<style>
+		/** { 
+			outline: 1px solid #838383;
+		}*/
+		@gridColumns: 12;
 		.sbs {
 			width: 350px;
-			margin: 10px;
+			margin: 150px 10px 0px 10px;
 			float: left;
+			opacity: 0.95;
 		}
 		.center {
 			width: 80%;
@@ -23,19 +28,28 @@
 		.field_with_errors {
 		  @extend .control-group;
 		  @extend .error;
-		 }
+		}
+		body {
+			 background: url('/assets/finance.jpg') no-repeat center center fixed;
+			 -webkit-background-size: cover;
+			 -moz-background-size: cover;
+			 -o-background-size: cover;
+			 background-size: cover;
+		}
 	</style>
 </head>
 <body>
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
+<div class="container">
 
-	<div class="modal-body">
+	<div class="row">
 
-		<div class="panel panel-primary sbs">
-			<div class="panel-heading">Borrower Login</div>
+		<div class="col-sm-1"></div>
+
+		<div class="col-sm-10">
+
+			<div class="panel panel-primary sbs">
+				<div class="panel-heading">Borrower Login</div>
 				<div id='borrower' class="panel-body">
 				<%= simple_form_for @borrower, :url => regborrowers_login_path, html: { class: 'form-vertical' } do |t| %>
 
@@ -49,10 +63,9 @@
 				</div>
 				<div class="panel-footer"><%= link_to "REGISTER", regborrowers_new_path %></div>
 			</div>
-		</div>
 
-		<div class="panel panel-success sbs">
-			<div class="panel-heading">Lender Login</div>
+			<div class="panel panel-success sbs">
+				<div class="panel-heading">Lender Login</div>
 				<div id='lender' class="panel-body">
 				<%= simple_form_for @lender, :url => reglenders_login_path, html: { class: 'form-vertical' } do |t| %>
 
@@ -66,10 +79,11 @@
 				</div>
 				<div class="panel-footer"><%= link_to "REGISTER", reglenders_new_path %></div>
 			</div>
+
 		</div>
+
+		<div class="col-sm-1"></div>
 
 	</div>
 
-    </div>
-  </div>
 </div>

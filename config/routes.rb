@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
 
+  get 'loans/index'
+
+  get 'loans/new'
+
+  get 'loans/create'
+
   get 'users/index'
   get 'regborrowers/new'
   get 'regborrowers/show'

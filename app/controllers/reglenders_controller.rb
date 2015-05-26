@@ -56,9 +56,7 @@ class ReglendersController < ApplicationController
     	@my_loans = Borrower.select("borrowers.first_name, borrowers.last_name, histories.*").joins(:histories).where("lender_id = ?",session[:id])
     	# shows loans that are available to lend to.
     	@open_loans = Borrower.select("borrowers.first_name, borrowers.last_name, histories.*").joins(:histories).where("amount_procured < loan AND lender_id = 0")
-		#@newloan = History.new
-		#@open_loans = History.all.joins(:borrowers).select(:id,:first_name, :last_name, :email, :loan, :needed_for, :description, :amount_procured).where('amount_procured < loan')
-		#@my_loans = History.all.joins(:borrowers, :lenders).where('lenders.id = '+session[:id].to_s).select('lenders.id, borrowers.first_name, borrowers.last_name, histories.loan, histories.amount_procured, histories.needed_for, histories.description')
+
 	end
 
 	def update
@@ -69,10 +67,11 @@ class ReglendersController < ApplicationController
 		@id = params[:id]
 		@history = History.find(@id)
 		if @history
+			@history[:lender_id] = session[:id] #set lender id on newly aqcuired loans
 			@history[:amount_procured] += @newloan
 			if @history.save
 				# successful save.  now take amount out of lender resources
-				@lender = Lender.find(@history[:lender_id])
+				@lender = Lender.find(session[:id])
 				@lender[:lendable] -= @newloan
 				session[:lendable] = @lender[:lendable]
 				@lender.save

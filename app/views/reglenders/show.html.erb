@@ -77,9 +77,9 @@
 							<th>Amount Raised</th>
 							<th>Action</th>
 						</tr>
-						<% if !@open_loans then %>
+						<% if @open_loans == nil then %>
 							<tr>
-								<td colspan=6>No borrowers have signed up yet.</td>
+								<td colspan=6>No borrowers available to lend to.</td>
 							</tr>
 						<% else %>
 							<% @open_loans.each do |b| %>
@@ -91,11 +91,13 @@
 									<td><%=number_to_currency(b[:amount_procured])%></td>
 
 									<td>
+
 									<%= form_tag "/reglenders/"+b[:id].to_s, method: 'patch' do %>
-									<%= number_field(:newloan, :loan_amount, in: 1.0..session[:lendable], step: 0.5) %>
+									<%= number_field(:newloan, :loan_amount, in: 1.0..(b[:loan]-b[:amount_procured]), step: 0.5) %>
 									&nbsp;
 									<%= submit_tag 'LEND', class: 'btn-xs btn-success' %>
 									<% end %>
+
 									</td>
 
 								</tr>
@@ -120,7 +122,7 @@
 							<th>Amount Raised</th>
 							<th>Action</th>
 						</tr>
-						<% if !@my_loans then %>
+						<% if @my_loans == nil then %>
 							<tr>
 								<td colspan=6>No borrowers have signed up yet.</td>
 							</tr>
@@ -133,10 +135,12 @@
 									<td><%=number_to_currency(b[:loan])%></td>
 									<td><%=number_to_currency(b[:amount_procured])%></td>
 									<td>
+									<% if b[:loan] > b[:amount_procured] then %>
 									<%= form_tag "/reglenders/"+b[:id].to_s, method: 'patch' do %>
-									<%= number_field(:newloan, :loan_amount, in: 1.0..session[:lendable], step: 0.5) %>
+									<%= number_field(:newloan, :loan_amount, in: 1.0..(b[:loan]-b[:amount_procured]), step: 0.5) %>
 									&nbsp;
 									<%= submit_tag 'LEND', class: 'btn-xs btn-success' %>
+									<% end %>
 									<% end %>
 									</td>
 								</tr>

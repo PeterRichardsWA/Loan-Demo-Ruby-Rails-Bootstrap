@@ -8,4 +8,5 @@ module ApplicationHelper
 	def normalize_money(number)
 		return number.to_s.delete(",.$")
 	end
+
 end

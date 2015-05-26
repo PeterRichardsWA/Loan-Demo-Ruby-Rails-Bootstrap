@@ -49,3 +49,4 @@ gem 'rails-footnotes'
 
 gem 'simple_form'
 
+gem 'seedbank'

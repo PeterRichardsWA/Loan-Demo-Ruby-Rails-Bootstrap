@@ -1,9 +1,3 @@
-<%
-# Need @lenders who are lending me money. added up to total, against how much I need.
-# @totalRaised
-# @fullName
-# @amountNeeded
-%>
 <style>
 	#container {
 		width: 95%;
@@ -14,6 +8,7 @@
 		margin: 0 auto;
 		margin-top: 10px;
 		width: 95%;
+		border-width: 1px solid #8e8e8e;
 	}
 	#left {
 		float:left;
@@ -46,19 +41,17 @@
 
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
-						<li class="active">
-							<a href="#">Portfolio</a>
-						</li>
 						<li>
-							<%= link_to "New Loan", loans_new_path %>
+							<a href="regborrowers/show">Active Loans</a>
+						</li>
+						<li class="active">
+							<a href="#">New Loan</a>
 						</li>
 					</ul>
 					<ul class="nav navbar-nav">
 						<li><a href='#'><%=session[:name]%></a></li>
 						<li class="divider"></li>
-						<li><a href='#' style="color: #F4F822">Needed: <%=number_to_currency(session[:loan])%></a></li>
-						<li class="divider"></li>
-						<li><a href='#' style="color: #14F826">Procurred: <%=number_to_currency(session[:procured])%></a></li>
+						<li><a href='#' style='color: #28F86E'>Balance: <%=number_to_currency(session[:lendable])%></a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li>
@@ -70,34 +63,25 @@
 			</nav>
 		</div>
 
-		<div class="panel panel-success sbs" style="margin-top:100px">
-			<div class="panel-heading">Your current set of lenders</div>
-				<div id='lender' class="panel-body">
-					<table class='table table-hover'>
-						<tr>
-							<th>Name</th>
-							<th>Email</th>
-							<th>Amount Lent</th>
-							<th>Since</th>
-						</tr>
-						<% if !@lenders then %>
-							<tr>
-								<td colspan=6>No lenders have lent you money yet.</td>
-							</tr>
-						<% else %>
-							<% @lenders.each do |l| %>
-								<tr>
-									<td><%=l[:first_name]+" "+l[:last_name]%></td>
-									<td><%=l[:email]%></td>
-									<td><%=number_to_currency(l[:amount_procured])%></td>
-									<td><%=l[:created_at].strftime('%b %d, %Y')%></td>
-								</tr>
-							<% end %>
-						<% end %>
-					</table>
+
+		<div class="panel panel-primary sbs" style="margin-top: 70px">
+			<div class="panel-heading">New Loan Request</div>
+				<div id='borrower' class="panel-body">
+				<%= simple_form_for @history, :url => loans_create_path, html: { class: 'form-vertical' } do |f| %>
+
+				  <% @tmp = @history %>
+				  <%= render 'shared/form_regerrors' %>
+
+				  <%= f.input :needed_for, placeholder: 'Short title for need...' %>
+				  <%= f.input :description, as: :text, placeholder: 'Full description of need...' %>
+				  <%= f.input :loan, as: :float, placeholder: 'Amount looking to borrow...' %>
+				  <%= f.button :submit, 'CREATE LOAN', :class => 'btn btn-primary' %>
+				<% end %>
 				</div>
-			<div class="panel-footer">These are your currently active loans.</div>
+				<div class="panel-footer">Create a new loan need here so lenders will see your request.</div>
+			</div>
 		</div>
 
 	</div>
+
 </div>
