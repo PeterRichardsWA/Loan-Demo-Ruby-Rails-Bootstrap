@@ -1,0 +1,49 @@
+
+<div class="container">
+	<div class="row clearfix">
+
+		<div class="col-md-12 column">
+			<nav class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
+				<div class="navbar-header">
+					 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="#">DojoLoans</a>
+				</div>
+
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li>
+							<a href="/reglenders/show">Loans</a>
+						</li>
+						<li class='active'>
+							<a href="#">Add Money</a>
+						</li>
+					</ul>
+					<ul class="nav navbar-nav">
+						<li><a href='#'><%=session[:name]%></a></li>
+						<li class="divider"></li>
+						<li><a href='#' style='color: #28F86E'>Balance: <%=number_to_currency(session[:lendable])%></a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<a href='/users/logout'>LOGOUT</a>
+						</li>
+						<li class='divider'>&nbsp;&nbsp;&nbsp;</li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+
+
+		<div class="panel panel-primary sbs" style='margin-top: 70px'>
+			<div class="panel-heading">Add Resources</div>
+			<div id='lender' class="panel-body">
+				<%= form_tag "/reglenders/savemoney", method: 'patch' do %>
+				<%= label_tag(:amount, "Add money to account: ") %>
+				<%= number_field_tag(:amount, :value, in: 1.0..1000000, step: 0.5) %>
+				&nbsp;
+				<%= submit_tag 'SAVE', class: 'btn-xs btn-success' %>
+				<% end %>
+			</div>
+		</div>
+
+	</div>
+</div>

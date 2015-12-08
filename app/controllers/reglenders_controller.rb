@@ -1,5 +1,7 @@
 class ReglendersController < ApplicationController
 
+	include ActionView::Helpers::NumberHelper
+
 	def new
 		@lender = Lender.new
 	end
@@ -46,16 +48,35 @@ class ReglendersController < ApplicationController
 
 	end
 
+	def addmoney
+
+	end
+
+	def savemoney
+		lender = Lender.find(session[:id])
+		addamount = number_with_precision(params[:amount], precision: 2).to_f
+		lender.lendable += addamount
+		lender.save
+		session[:lendable] = lender.lendable
+		redirect_to reglenders_show_path
+	end
+
 	def show
 		# amount raised calculated from sums of individual loads. loans with same id, same lender and same borrower with show amount
 		#  can break down later to make EACH transaction separate for record kepping and indivudual % rates.
 		# @lender = Lender.find(session[:id]) # find logged in lender.
 		#@borrowers = Borrower.all # need join that joins history with borrowers.
-		session[:lendable] = Lender.find(session[:id]).lendable
-    	# shows only loans I've lent to
-    	@my_loans = Borrower.select("borrowers.first_name, borrowers.last_name, histories.*").joins(:histories).where("lender_id = ?",session[:id])
-    	# shows loans that are available to lend to.
-    	@open_loans = Borrower.select("borrowers.first_name, borrowers.last_name, histories.*").joins(:histories).where("amount_procured < loan AND lender_id = 0")
+		if session[:id]
+			if Lender.find(session[:id]).lendable
+	    		# shows only loans I've lent to
+    			@my_loans = Borrower.select("borrowers.first_name, borrowers.last_name, histories.*").joins(:histories).where("lender_id = ?",session[:id])
+    		end
+    	end
+
+    	@loan_total = 0
+    	@amount_total = 0
+   		# shows loans that are available to lend to.
+    	@open_loans = Borrower.select("borrowers.first_name, borrowers.last_name, histories.*").joins(:histories)#.where("amount_procured < loan OR lender_id = 0")
 
 	end
 

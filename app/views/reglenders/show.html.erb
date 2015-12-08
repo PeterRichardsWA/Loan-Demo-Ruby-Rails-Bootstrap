@@ -28,6 +28,12 @@
 	.clear {
 		clear: both;
 	}
+	.currency {
+		text-align: right;
+	}
+	.lendfield {
+		size: 5;
+	}
 </style>
 
 <div class="container">
@@ -45,13 +51,14 @@
 							<a href="#">Loans</a>
 						</li>
 						<li>
-							<a href="#">Add Money</a>
+							<a href="/reglenders/addmoney">Add Money</a>
 						</li>
 					</ul>
 					<ul class="nav navbar-nav">
 						<li><a href='#'><%=session[:name]%></a></li>
 						<li class="divider"></li>
-						<li><a href='#' style='color: #28F86E'>Balance: <%=number_to_currency(session[:lendable])%></a></li>
+						<li><a href='#' style='color: #28F86E'>Balance: 
+						<%=session[:lendable].to_s(:currency, precision: 2)%></a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li>
@@ -63,7 +70,6 @@
 			</nav>
 		</div>
 
-
 		<div class="panel panel-primary sbs" style='margin-top: 70px'>
 			<div class="panel-heading">List of People in Need of Help</div>
 
@@ -73,8 +79,8 @@
 							<th>Name</th>
 							<th>Needed For</th>
 							<th>Reason for Loan</th>
-							<th>Amount Needed</th>
-							<th>Amount Raised</th>
+							<th style='text-align:right'>Amount Needed</th>
+							<th style='text-align:right'>Amount Raised</th>
 							<th>Action</th>
 						</tr>
 						<% if @open_loans == nil then %>
@@ -82,27 +88,34 @@
 								<td colspan=6>No borrowers available to lend to.</td>
 							</tr>
 						<% else %>
-							<% @open_loans.each do |b| %>
+							<% @open_loans.each do |b|
+								@loan_total = @loan_total + b[:loan]
+								@amount_total = @amount_total + b[:amount_procured]
+								%>
 								<tr>
 									<td><%=b[:first_name]+" "+b[:last_name]%></td>
 									<td><%=b[:needed_for]%></td>
 									<td><%=b[:description]%></td>
-									<td><%=number_to_currency(b[:loan])%></td>
-									<td><%=number_to_currency(b[:amount_procured])%></td>
-
+									<td class='currency'><%=b[:loan].to_s(:currency, precision: 2)%></td>
+									<td class='currency'><%=b[:amount_procured].to_s(:currency, precision: 2)%></td>
 									<td>
-
-									<%= form_tag "/reglenders/"+b[:id].to_s, method: 'patch' do %>
-									<%= number_field(:newloan, :loan_amount, in: 1.0..(b[:loan]-b[:amount_procured]), step: 0.5) %>
-									&nbsp;
-									<%= submit_tag 'LEND', class: 'btn-xs btn-success' %>
+									<% if b[:amount_procured] < b[:loan] %>
+										<%= form_tag "/reglenders/"+b[:id].to_s, method: 'patch' do %>
+										<%= number_field(:newloan, :loan_amount, in: 1.0..(b[:loan]-b[:amount_procured]), step: 0.5, class: 'lendfield') %>
+										&nbsp;
+										<%= submit_tag 'LEND', class: 'btn-xs btn-success' %>
+										<% end %>
 									<% end %>
-
 									</td>
-
 								</tr>
 							<% end %>
 						<% end %>
+						<tr>
+							<td colspan=3 style='font-weight:bold; text-align: right'>Totals:</td>
+							<td class='currency' style='font-weight: bold'><%=@loan_total.to_s(:currency, precision: 2)%></td>
+							<td class='currency' style='font-weight: bold'><%=@amount_total.to_s(:currency, precision: 2)%></td>
+							<td>&nbsp;</td>
+						</tr>
 					</table>
 				</div>
 
@@ -118,8 +131,8 @@
 							<th>Name</th>
 							<th>Needed For</th>
 							<th>Reason for Loan</th>
-							<th>Amount Needed</th>
-							<th>Amount Raised</th>
+							<th class='currency'>Amount Needed</th>
+							<th class='currency'>Amount Raised</th>
 							<th>Action</th>
 						</tr>
 						<% if @my_loans == nil then %>
@@ -132,8 +145,8 @@
 									<td><%=b[:first_name]+" "+b[:last_name]%></td>
 									<td><%=b[:needed_for]%></td>
 									<td><%=b[:description]%></td>
-									<td><%=number_to_currency(b[:loan])%></td>
-									<td><%=number_to_currency(b[:amount_procured])%></td>
+									<td class='currency'><%=b[:loan].to_s(:currency, precision: 2)%></td>
+									<td class='currency'><%=b[:amount_procured].to_s(:currency, precision: 2)%></td>
 									<td>
 									<% if b[:loan] > b[:amount_procured] then %>
 									<%= form_tag "/reglenders/"+b[:id].to_s, method: 'patch' do %>
@@ -148,7 +161,6 @@
 						<% end %>
 					</table>
 				</div>
-
 			<div class="panel-footer">You may lend money to anyone on this list. Adding money to an existing loan will simply add that amount to the total loan.</div>
 		</div>
 

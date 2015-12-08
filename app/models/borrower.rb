@@ -19,4 +19,8 @@ class Borrower < ActiveRecord::Base
       self.email.downcase!
   end
 
+  def truncate_me!
+    ActiveRecord::Base.connection.execute("TRUNCATE TABLE #{table_name}")
+  end
+
 end

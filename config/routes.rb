@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   get 'loans/new'
 
-  get 'loans/create'
+  post 'loans/create'
 
   get 'users/index'
   get 'regborrowers/new'
@@ -14,7 +14,9 @@ Rails.application.routes.draw do
 
   get 'reglenders/new'
   get 'reglenders/show'
+  get 'reglenders/addmoney'
   patch 'reglenders/:id', to: 'reglenders#update', constraints: { id: /\d{1,}/ }
+  patch 'reglenders/savemoney', to: 'reglenders#savemoney'
   post 'reglenders/create'
   post 'reglenders/login'
 

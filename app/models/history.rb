@@ -13,4 +13,8 @@ class History < ActiveRecord::Base
 		self.lender_id	||= 0
 	end
 
+	def truncate_me!
+	  ActiveRecord::Base.connection.execute("TRUNCATE TABLE #{table_name}")
+	end
+
 end

@@ -6,8 +6,19 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first
 
-# need to delete all first or this will insert dupes
+# need to delete all first or this will insert dupes. destroys all with truncate.
 #
+# ActiveRecord::Base.establish_connection
+# ActiveRecord::Base.connection.tables.each do |table|
+#   next if table == 'schema_migrations'
+
+#   # MySQL and PostgreSQL
+#   ActiveRecord::Base.connection.execute("TRUNCATE #{table}") # wipe all tables
+
+#   # SQLite
+#   # ActiveRecord::Base.connection.execute("DELETE FROM #{table}")
+# end
+
 Borrower.create(first_name: 'George', last_name: 'Harrison', email: 'george@user.com', password: '1234')
 Borrower.create(first_name: 'Ringo', last_name: 'Starr', email: 'ringo@user.com', password: '1234')
 Borrower.create(first_name: 'John', last_name: 'Lennon', email: 'lennon@user.com', password: '1234')
